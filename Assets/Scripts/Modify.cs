@@ -3,26 +3,22 @@ using System.Collections;
 
 public class Modify : MonoBehaviour
 {
+    public Camera cam;
+    Ray ray;
 
-    Vector2 rot;
-
+    void Start()
+    {
+    }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        ray = cam.ScreenPointToRay(Input.mousePosition);
+        if (Input.GetMouseButton(0))
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, transform.forward, out hit, 100))
+            if (Physics.Raycast(ray, out hit, 100))
             {
                 EditTerrain.SetBlock(hit, new BlockAir());
             }
         }
-
-        rot = new Vector2(rot.x + Input.GetAxis("Mouse X") * 3, rot.y + Input.GetAxis("Mouse Y") * 3);
-
-        transform.localRotation = Quaternion.AngleAxis(rot.x, Vector3.up);
-        transform.localRotation *= Quaternion.AngleAxis(rot.y, Vector3.left);
-
-        transform.position += transform.forward * 3 * Input.GetAxis("Vertical");
-        transform.position += transform.right * 3 * Input.GetAxis("Horizontal");
     }
 }
